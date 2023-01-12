@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.7.5'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	id 'java'
+	id 'com.google.cloud.tools.jib' version '3.2.1'
 }
 
 group = 'kr.co.e8ight.ndxpro'
@@ -15,6 +16,14 @@ configurations {
 }
 
 repositories {
+	maven {
+		url 'http://172.16.28.217:9081/repository/maven-releases/'
+		allowInsecureProtocol = true
+		credentials {
+			username = "admin"
+			password = "ndxpro123!"
+		}
+	}
 	mavenCentral()
 }
 
@@ -30,4 +39,24 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+jib {
+	from{
+		image = "openjdk:11.0.14-jre-slim"
+	}
+	to {
+		image = "172.16.28.217:12000/data-ingest/pointcalc"
+		tags = ["0.0.1"]
+		auth {
+			username = "admin"
+			password = "ndxpro123!"
+		}
+		container {
+			mainClass ="kr.co.e8ight.ndxpro.pointcalc.PointCalcApplication"
+			ports = ["9898"]
+			environment = ["TZ" : "Asia/Seoul"]
+		}
+	}
+	setAllowInsecureRegistries(true)
 }

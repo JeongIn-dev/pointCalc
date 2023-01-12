@@ -9,15 +9,18 @@ public class Vehicle implements Serializable {
     double location;
     double speed;
 
+    String type;
+
     public Vehicle() {
     }
 
-    public Vehicle(int id, int linkId, int lane, double location, double speed) {
+    public Vehicle(int id, int linkId, int lane, double location, double speed, String type) {
         this.id = id;
         this.linkId = linkId;
         this.lane = lane;
         this.location = location;
         this.speed = speed;
+        this.type = type;
     }
 
     public int getId() {
@@ -38,6 +41,14 @@ public class Vehicle implements Serializable {
 
     public double getSpeed() {
         return speed;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setId(int id) {

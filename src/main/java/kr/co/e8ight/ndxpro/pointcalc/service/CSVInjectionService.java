@@ -31,7 +31,7 @@ public class CSVInjectionService {
         this.entityRepository = entityRepository;
     }
 
-    @PostConstruct
+//    @PostConstruct
     private void importLinkData() throws IOException {
         List<Entity> entities = entityRepository.findAll();
         for (Entity entity : entities) {
@@ -50,16 +50,16 @@ public class CSVInjectionService {
 
         System.out.println("Run Car Point Calculator");
 //        calcXYfromCSV();
-        jsonfromCSV();
+//        jsonfromCSV();
     }
 
     public void calcXYfromCSV() throws IOException {
         for (int i = 900; i <= 1200; i++) {
 //        for (int i = 1190; i <= 1190; i++) {
-            FileReader fileReader = new FileReader("/Users/E8L-20220010/Downloads/Info_Example/01.Vehicle_Info/Vehicle_Info__VISSIM_Time_" + i + ".csv");
+            FileReader fileReader = new FileReader("/visim/01.Vehicle_Info/Vehicle_Info__VISSIM_Time_" + i + ".csv");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             Stream<String> lines = bufferedReader.lines();
-            FileWriter fileWriter = new FileWriter("/Users/E8L-20220010/Downloads/Info_Example/01.Vehicle_Info/json/Vehicle_Info__VISSIM_Time_" + i + ".json");
+            FileWriter fileWriter = new FileWriter("/visim/01.Vehicle_Info/json/Vehicle_Info__VISSIM_Time_" + i + ".json");
             lines.skip(1).forEach(
                     row -> {
                         try {
@@ -100,10 +100,10 @@ public class CSVInjectionService {
         for (int i = 900; i <= 1200; i++) {
 //        for (int i = 1190; i <= 1190; i++) {
             List<Vehicle> vehicles = new ArrayList<>();
-            FileReader fileReader = new FileReader("/Users/E8L-20220010/Downloads/Info_Example/01.Vehicle_Info/Vehicle_Info__VISSIM_Time_"+i+".csv");
+            FileReader fileReader = new FileReader("/visim/01.Vehicle_Info/Vehicle_Info__VISSIM_Time_"+i+".csv");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             Stream<String> lines = bufferedReader.lines();
-            FileWriter fileWriter = new FileWriter("/Users/E8L-20220010/Downloads/Info_Example/01.Vehicle_Info/json/Vehicle_Info__VISSIM_Time_"+i+".json");
+            FileWriter fileWriter = new FileWriter("/visim/01.Vehicle_Info/json/Vehicle_Info__VISSIM_Time_"+i+".json");
 
             int time = i;
 
@@ -115,7 +115,8 @@ public class CSVInjectionService {
                         int lane = Integer.parseInt(split[2]);
                         double distance = Double.parseDouble(split[3]);
                         double speed = Double.parseDouble(split[4]);
-                        vehicles.add(new Vehicle(id, linkId, lane, distance, speed));
+                        String type = split[5];
+                        vehicles.add(new Vehicle(id, linkId, lane, distance, speed, type));
                     }
             );
             VehicleResponseDto responseDto = new VehicleResponseDto(time, vehicles);
@@ -131,12 +132,12 @@ public class CSVInjectionService {
     public VehicleResponseDto getVehicles() throws IOException {
         long currentTimeMillis = System.currentTimeMillis();
         long l = Math.round(currentTimeMillis / 1000.0);
-        int i = (int) (l % 301);
+        int i = (int) (l % 1805);
 
         int fileNum = i + 900;
 
         List<Vehicle> vehicles = new ArrayList<>();
-        FileReader fileReader = new FileReader("/Users/E8L-20220010/Downloads/Info_Example/01.Vehicle_Info/Vehicle_Info__VISSIM_Time_"+fileNum+".csv");
+        FileReader fileReader = new FileReader("/visim/01.Vehicle_Info/Vehicle_Info__VISSIM_Time_"+fileNum+".csv");
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         Stream<String> lines = bufferedReader.lines();
 
@@ -148,7 +149,8 @@ public class CSVInjectionService {
                     int lane = Integer.parseInt(split[2]);
                     double distance = Double.parseDouble(split[3]);
                     double speed = Double.parseDouble(split[4]);
-                    vehicles.add(new Vehicle(id, linkId, lane, distance, speed));
+                    String type = split[5];
+                    vehicles.add(new Vehicle(id, linkId, lane, distance, speed, type));
                 });
 
         bufferedReader.close();
