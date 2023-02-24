@@ -1,4 +1,4 @@
-package kr.co.e8ight.ndxpro.pointcalc.service;
+package kr.co.e8ight.ndxpro.pointcalc.domain;
 
 import java.io.Serializable;
 

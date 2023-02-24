@@ -47,7 +47,7 @@ jib {
 	}
 	to {
 		image = "172.16.28.217:12000/data-ingest/pointcalc"
-		tags = ["0.0.1"]
+		tags = ["0.0.2"]
 		auth {
 			username = "admin"
 			password = "ndxpro123!"

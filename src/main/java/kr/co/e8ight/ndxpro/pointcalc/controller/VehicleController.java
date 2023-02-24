@@ -1,7 +1,7 @@
 package kr.co.e8ight.ndxpro.pointcalc.controller;
 
 import kr.co.e8ight.ndxpro.pointcalc.service.CSVInjectionService;
-import kr.co.e8ight.ndxpro.pointcalc.service.VehicleResponseDto;
+import kr.co.e8ight.ndxpro.pointcalc.domain.VehicleResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
