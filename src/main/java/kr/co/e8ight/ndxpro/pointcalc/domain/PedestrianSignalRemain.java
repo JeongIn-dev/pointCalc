@@ -5,17 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Vehicle implements Serializable {
-    int id;
-    int linkId;
-    int lane;
-    double location;
-    double speed;
-    String type;
+public class PedestrianSignalRemain {
+    private Integer e;
+    private Integer w;
+    private Integer s;
+    private Integer n;
 }
