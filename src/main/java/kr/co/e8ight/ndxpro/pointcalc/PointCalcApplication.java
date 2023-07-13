@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // docker stop limes
 // docker rm limes
 // docker rmi 172.16.28.217:12000/data-ingest/pointcalc:0.0.2
-// docker run -dp 51001:9000 --name limes -v /home/jeongin/visim:/visim 172.16.28.217:12000/data-ingest/pointcalc:0.0.2
+// docker run -dp 51002:9000 --name limes -v /home/jeongin/visim:/visim 172.16.28.217:12000/data-ingest/pointcalc:0.0.2
 @SpringBootApplication
 public class PointCalcApplication {
 

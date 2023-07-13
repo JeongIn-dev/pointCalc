@@ -42,10 +42,9 @@ public class CSVInjectionService {
             throw new RuntimeException("max number reached.");
         }
 
-        System.out.println(curr);
         TrafficInfo tod = getTrafficInfo("tod");
         TrafficInfo rtsc = getTrafficInfo("rtsc");
-        List<Frame> items = List.of(new Frame(curr, "REAL", curr, LocalDateTime.now(), tod, rtsc));
+        List<Frame> items = List.of(new Frame(curr, "HISTORY", curr, LocalDateTime.now(), tod, rtsc));
         curr++;
 
         String isFinish;
