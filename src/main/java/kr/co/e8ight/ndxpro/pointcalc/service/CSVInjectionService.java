@@ -38,9 +38,11 @@ public class CSVInjectionService {
 
     public VehicleResponseDto getVehicles(String timeGroup) throws IOException {
         if ( curr > max ) {
-//            curr = min;
-            throw new RuntimeException("max number reached.");
+            curr = min;
+//            throw new RuntimeException("max number reached.");
         }
+
+        System.out.println("read Frame : " + curr);
 
         TrafficInfo tod = getTrafficInfo("tod");
         TrafficInfo rtsc = getTrafficInfo("rtsc");
