@@ -22,6 +22,11 @@ public class VehicleController {
         return service.getVehicles(timeGroup);
     }
 
+    @PostMapping("/api/getTraffic.json")
+    public VehicleResponseDto getTraffic() throws IOException {
+        return service.getVehicles();
+    }
+
     @PostMapping("/")
     public VehicleResponseDto responseVehiclePost() throws IOException {
         return service.getVehicles("오전 첨두");

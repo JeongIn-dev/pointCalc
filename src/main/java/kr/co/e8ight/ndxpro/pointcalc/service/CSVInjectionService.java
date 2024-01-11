@@ -16,6 +16,9 @@ public class CSVInjectionService {
 
     private Integer min;
     private Integer max;
+    private String date;
+    private String timeGroup;
+    private boolean stop = false;
 
     @PostConstruct
     public void setFirstNum() {
@@ -25,18 +28,24 @@ public class CSVInjectionService {
             throw new RuntimeException("no csv files.");
         }
 
-        min = Arrays.stream(list)
-                .map(name -> Integer.parseInt(name.replace("TOD_Vehicle_Info__VISSIM_Time_", "").replace(".csv", "")))
-                .min(Comparator.naturalOrder()).get();
+//        min = Arrays.stream(list)
+//                .map(name -> Integer.parseInt(name.replace("TOD_Vehicle_Info__VISSIM_Time_", "").replace(".csv", "")))
+//                .min(Comparator.naturalOrder()).get();
+//        System.out.println("min : " + min);
 
-//        min = 300;
+        min = 300;
         curr = min;
         max = Arrays.stream(list)
                 .map(name -> Integer.parseInt(name.replace("TOD_Vehicle_Info__VISSIM_Time_", "").replace(".csv", ""))).max(Comparator.naturalOrder()).get();
+        System.out.println("max : " + max);
 //        max = 2099;
     }
 
     public VehicleResponseDto getVehicles(String timeGroup) throws IOException {
+        if ( stop ) {
+            return new VehicleResponseDto(0, "success", "Y", this.timeGroup, 0, new ArrayList<>());
+        }
+
         if ( curr > max ) {
             curr = min;
 //            throw new RuntimeException("max number reached.");
@@ -51,12 +60,41 @@ public class CSVInjectionService {
 
         String isFinish;
         if ( curr > max ) {
+//        if ( curr % 60 == 0 ) {
             isFinish = "Y";
+            return new VehicleResponseDto(0, "success", isFinish, timeGroup, 0, new ArrayList<>());
         } else {
             isFinish = "N";
+            return new VehicleResponseDto(0, "success", isFinish, timeGroup, items.size(), items);
+        }
+    }
+
+    public VehicleResponseDto getVehicles() throws IOException {
+        if ( stop ) {
+            return new VehicleResponseDto(0, "success", "Y", this.timeGroup, 0, new ArrayList<>());
         }
 
-        return new VehicleResponseDto(0, "success", isFinish, timeGroup, items.size(), items);
+        if ( curr > max ) {
+            curr = min;
+//            throw new RuntimeException("max number reached.");
+        }
+
+        System.out.println("read Frame : " + curr);
+
+        TrafficInfo tod = getTrafficInfo("tod");
+        TrafficInfo rtsc = getTrafficInfo("rtsc");
+        List<Frame> items = List.of(new Frame(curr, "HISTORY", curr, LocalDateTime.now(), tod, rtsc));
+        curr++;
+
+        String isFinish;
+        if ( curr > max ) {
+//        if ( curr % 60 == 0 ) {
+            isFinish = "Y";
+            return new VehicleResponseDto(0, "success", isFinish, this.timeGroup, 0, new ArrayList<>());
+        } else {
+            isFinish = "N";
+            return new VehicleResponseDto(0, "success", isFinish, this.timeGroup, items.size(), items);
+        }
     }
 
     private TrafficInfo getTrafficInfo(String signalType) throws IOException {
@@ -153,6 +191,18 @@ public class CSVInjectionService {
         signalFileReader.close();
 
         return new TrafficInfo(vehicles, pedestrians, vehicleSignals, pedestrianSignals);
+    }
+
+    public void setTimeGroup(String timeGroup) {
+        this.timeGroup = timeGroup;
+    }
+
+    public void stop() {
+        this.stop = true;
+    }
+
+    public void start() {
+        this.stop = false;
     }
 }
 
