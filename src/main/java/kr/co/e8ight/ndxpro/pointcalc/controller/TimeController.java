@@ -38,8 +38,8 @@ public class TimeController {
         String from = body.get("fromDtm").substring(8, 10);
         String to = body.get("toDtm").substring(8, 10);
         service.setTimeGroup(from + "~" + to);
-        service.start();
-        System.out.println("start " + from + "~" + to);
+        int start = service.start(body.get("fromDtm"), body.get("toDtm"));
+        System.out.println("start " + body.get("fromDtm") + "~" + body.get("toDtm") + ", curr : " + start);
         return new VissimResponseDto(0, "success", null, 0, null);
     }
 

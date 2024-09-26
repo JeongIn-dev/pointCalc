@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -201,8 +203,14 @@ public class CSVInjectionService {
         this.stop = true;
     }
 
-    public void start() {
+    public int start(String fromDtm, String toDtm) {
+        LocalDateTime from = LocalDateTime.parse(fromDtm, DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        LocalDateTime to = LocalDateTime.parse(toDtm, DateTimeFormatter.ofPattern("yyyyMMddHHmmss")).minusHours(2);
+        Duration between = Duration.between(to.toLocalTime(), from.toLocalTime());
+        long seconds = between.getSeconds();
+        curr = (int) (300 + seconds);
         this.stop = false;
+        return curr;
     }
 }
 
