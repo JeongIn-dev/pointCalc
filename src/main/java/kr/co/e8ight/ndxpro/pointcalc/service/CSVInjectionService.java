@@ -85,6 +85,9 @@ public class CSVInjectionService {
 
         TrafficInfo tod = getTrafficInfo("tod");
         TrafficInfo rtsc = getTrafficInfo("rtsc");
+
+        long totalSize = tod.getVehicles().size() + rtsc.getVehicles().size() + tod.getVehicleSignals().size() + rtsc.getVehicleSignals().size();
+      System.out.println("entity size : " + totalSize);
         List<Frame> items = List.of(new Frame(curr, "HISTORY", curr, LocalDateTime.now(), tod, rtsc));
         curr++;
 
@@ -127,7 +130,13 @@ public class CSVInjectionService {
                     if ( Integer.parseInt(type) >= 510 ) {
                         pedestrians.add(new Vehicle(id, linkId, lane, distance, speed, type));
                     } else {
-                        vehicles.add(new Vehicle(id, linkId, lane, distance, speed, type));
+                      vehicles.add(new Vehicle(id, linkId, lane, distance, speed, type));
+                      vehicles.add(new Vehicle(id+5000, linkId, lane, distance, speed, type));
+                      vehicles.add(new Vehicle(id+6000, linkId, lane, distance, speed, type));
+                      vehicles.add(new Vehicle(id+7000, linkId, lane, distance, speed, type));
+                      vehicles.add(new Vehicle(id+8000, linkId, lane, distance, speed, type));
+                      vehicles.add(new Vehicle(id+9000, linkId, lane, distance, speed, type));
+                      vehicles.add(new Vehicle(id+10000, linkId, lane, distance, speed, type));
                     }
                 });
 
